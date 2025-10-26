@@ -1,0 +1,50 @@
+services:
+  peer0.org1.example.com:
+    container_name: peer0.org1.example.com
+    image: hyperledger/fabric-peer:latest
+    labels:
+      service: hyperledger-fabric
+    environment:
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=fabric_test
+    volumes:
+      - .\organizations\peerOrganizations\org1.example.com\peers\peer0.org1.example.com\msp:/etc/hyperledger/fabric/msp
+      - //var/run/docker.sock:/host/var/run/docker.sock
+    ports:
+      - 7051:7051
+
+  peer0.org2.example.com:
+    container_name: peer0.org2.example.com
+    image: hyperledger/fabric-peer:latest
+    labels:
+      service: hyperledger-fabric
+    environment:
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=fabric_test
+    volumes:
+      - .\organizations\peerOrganizations\org2.example.com\peers\peer0.org2.example.com\msp:/etc/hyperledger/fabric/msp
+      - //var/run/docker.sock:/host/var/run/docker.sock
+    ports:
+      - 7052:7051
+  
+  orderer.example.com:
+    container_name: orderer.example.com
+    image: hyperledger/fabric-orderer:latest
+    labels:
+      service: hyperledger-fabric
+    environment:
+      - ORDERER_GENERAL_LOGLEVEL=info
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_LISTENPORT=7050
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
+      - ORDERER_GENERAL_TLS_ENABLED=true
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+    volumes:
+      - .\system-genesis-block\genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - .\organizations\ordererOrganizations\example.com\orderers\localhost.example.com\msp:/var/hyperledger/orderer/msp
+      - .\organizations\ordererOrganizations\example.com\orderers\localhost.example.com\tls:/var/hyperledger/orderer/tls
+    ports:
+      - 7050:7050
