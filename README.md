@@ -10,12 +10,6 @@ Windows Powershell: `scoop install hyperledger-fabric`
 
 Unix (Mac OS or Linux): `brew install hyperledger-fabric`
 
-### **Hyperledger Fabric CA**
-
-Windows Powershell: `scoop install hyperledger-fabric-ca`
-
-Unix (Mac OS or Linux): `brew install hyperledger-fabric-ca`
-
 ## Generate all files of orderer, peer1 and peer2 
 
 ```bash
