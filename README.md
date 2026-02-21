@@ -6,9 +6,9 @@ This demo runs on docker, the first container is orderer and another 2 container
 
 ### **Hyperledge Fabric**
 
-Windows Powershell: `scoop install hyperledger-fabric` [Windows Version](https://github.com/mvrpl/windows-apps/blob/main/bucket/hyperledger-fabric.json)
+Windows Powershell: `scoop install hyperledger-fabric` [Scoop Manifest](https://github.com/mvrpl/windows-apps/blob/main/bucket/hyperledger-fabric.json)
 
-Unix (Mac OS or Linux): `brew install hyperledger-fabric` [Mac Or Linux Version](https://github.com/mvrpl/unix-apps/blob/main/Formula/hyperledger-fabric.rb)
+Unix (Mac OS or Linux): `brew install hyperledger-fabric` [Brew Formula](https://github.com/mvrpl/unix-apps/blob/main/Formula/hyperledger-fabric.rb)
 
 ## Generate all files of orderer, peer1 and peer2 
 
