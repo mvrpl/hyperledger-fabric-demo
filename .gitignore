@@ -5,3 +5,5 @@ priv_sk
 organizations/
 go.sum
 *.exe
+smart_contract_demo/smart_contract
+hardwares.tar.gz

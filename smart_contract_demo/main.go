@@ -2,12 +2,9 @@ package main
 
 import (
 	"encoding/json"
-	"flag"
 	"fmt"
-	"os"
 
 	"github.com/hyperledger/fabric-contract-api-go/v2/contractapi"
-	"github.com/mvrpl/hyperledger-fabric-smart-contract-demo/mocks"
 )
 
 type SmartContract struct {
@@ -172,93 +169,14 @@ func (s *SmartContract) GetAllHardwares(ctx contractapi.TransactionContextInterf
 	return hardwares, nil
 }
 
-func (h *Hardware) Set(s string) error {
-	err := json.Unmarshal([]byte(s), h)
-	if err != nil {
-		return fmt.Errorf("failed to parse JSON: %w", err)
-	}
-	return nil
-}
-
-func (h *Hardware) String() string {
-	return fmt.Sprintf("VendorID: %s, ModelID: %s, SerialNumber: %s, OwnerName: %s, ConditionScore: %.1f", h.VendorID, h.ModelID, h.SerialNumber, h.OwnerName, h.ConditionScore)
-}
-
 func main() {
-	sc := SmartContract{}
+	simpleContract := new(SmartContract)
 
-	chaincodeStub := &mocks.ChaincodeStub{}
-	transactionContext := &mocks.TransactionContext{}
-	transactionContext.GetStubReturns(chaincodeStub)
-
-	hardware := Hardware{}
-
-	funcName := flag.String("function", "InitLedger", "A function name of smart contract to execute")
-	newOwner := flag.String("newOwner", "", "The new owner of the hardware to transfer")
-	hardwareID := flag.String("hardwareID", "", "The ID of the hardware")
-	conditionScore := flag.Float64("conditionScore", 0.0, "The condition score of the hardware")
-	flag.Var(&hardware, "hardware", "A JSON string of the hardware object (e.g., '{\"VendorID\":\"ManufactureName\",\"ModelID\":\"ModelName\",\"SerialNumber\":\"SerialNumber\",\"OwnerName\":\"OwnerName\",\"ConditionScore\":98.8}')")
-
-	flag.Parse()
-
-	switch *funcName {
-	case "InitLedger":
-		err := sc.InitLedger(transactionContext)
-		if err != nil {
-			fmt.Println("Error initializing ledger:", err)
-			os.Exit(166)
-		}
-	case "GetAllHardwares":
-		hardwares, err := sc.GetAllHardwares(transactionContext)
-		if err != nil {
-			fmt.Println("Error getting all hardwares:", err)
-			os.Exit(167)
-		} else {
-			fmt.Println("All Hardwares:", hardwares)
-		}
-	case "GetHardware":
-		hardware, err := sc.ReadHardware(transactionContext, *hardwareID)
-		if err != nil {
-			fmt.Println("Error getting hardware:", err)
-			os.Exit(167)
-		} else {
-			fmt.Println("Hardware:", hardware)
-		}
-	case "TransferHardware":
-		oldOwner, err := sc.TransferHardware(transactionContext, *hardwareID, *newOwner)
-		if err != nil {
-			fmt.Println("Error transferring hardware:", err)
-			os.Exit(168)
-		} else {
-			fmt.Println(oldOwner, " => ", *newOwner)
-		}
-	case "DeleteHardware":
-		err := sc.DeleteHardware(transactionContext, *hardwareID)
-		if err != nil {
-			fmt.Println("Error deleting hardware:", err)
-			os.Exit(169)
-		} else {
-			fmt.Println("Hardware deleted:", *hardwareID)
-		}
-	case "UpdateHardware":
-		err := sc.UpdateHardware(transactionContext, *hardwareID, float32(*conditionScore))
-		if err != nil {
-			fmt.Println("Error updating hardware:", err)
-			os.Exit(170)
-		} else {
-			fmt.Println("Hardware updated:", *hardwareID)
-		}
-	case "CreateHardware":
-		err := sc.CreateHardware(transactionContext, hardware)
-		if err != nil {
-			fmt.Println("Error creating hardware:", err)
-			os.Exit(171)
-		} else {
-			fmt.Println("Hardware created:", hardware.SerialNumber)
-		}
-	default:
-		fmt.Println("Invalid function name. Use -function flag to specify a valid function (e.g., InitLedger, GetAllHardwares, GetHardware, TransferHardware, DeleteHardware).")
-		os.Exit(199)
+	cc, err := contractapi.NewChaincode(simpleContract)
+	if err != nil {
+		panic(err.Error())
 	}
-
+	if err := cc.Start(); err != nil {
+		panic(err.Error())
+	}
 }
