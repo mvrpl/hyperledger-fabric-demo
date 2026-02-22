@@ -3,3 +3,5 @@ priv_sk
 *.pem
 *.key
 organizations/
+go.sum
+*.exe
