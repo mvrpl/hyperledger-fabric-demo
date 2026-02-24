@@ -1,8 +1,8 @@
 peer:
-  id: jdoe
+  id: org1.example.com
   networkId: dev
-  listenAddress: 0.0.0.0:7051
-  address: 0.0.0.0:7051
+  listenAddress: localhost:7051
+  address: localhost:7051
   addressAutoDetect: false
   gateway:
     enabled: true
@@ -112,7 +112,7 @@ peer:
       AltID:
       KeyIds:
   mspConfigPath: msp
-  localMspId: SampleOrg
+  localMspId: Org1MSP
   client:
     connTimeout: 3s
   deliveryclient:
