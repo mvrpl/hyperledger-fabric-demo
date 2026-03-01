@@ -58,6 +58,25 @@ docker pull hyperledger/fabric-ccenv
 peer lifecycle chaincode install hardwares.tar.gz
 ```
 
+## Create Channel
+
+```bash
+export CORE_PEER_TLS_ENABLED=true
+export CORE_PEER_LOCALMSPID="Org1MSP"
+export CORE_PEER_TLS_ROOTCERT_FILE=./organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
+
+configtxgen -profile TwoOrgsChannel -outputCreateChannelTx ./channel-artifacts/channel1.tx -channelID channel1
+configtxgen -profile TwoOrgsOrdererGenesis -outputBlock ./channel-artifacts/channel1.block -channelID channel1
+
+osnadmin channel join \
+--channelID channel1 \
+--config-block ./channel-artifacts/channel1.block \
+-o localhost:7053 \
+--ca-file ./organizations/ordererOrganizations/example.com/orderers/localhost.example.com/msp/tlscacerts/tlsca.example.com-cert.pem \
+--client-cert ./organizations/ordererOrganizations/example.com/users/Admin@example.com/tls/client.crt \
+--client-key ./organizations/ordererOrganizations/example.com/users/Admin@example.com/tls/client.key
+```
+
 ## Approve the Chaincode Definition
 
 ```bash

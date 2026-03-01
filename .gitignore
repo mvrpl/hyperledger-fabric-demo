@@ -7,3 +7,5 @@ go.sum
 *.exe
 smart_contract_demo/smart_contract
 hardwares.tar.gz
+channel-artifacts/
+system-genesis-block/

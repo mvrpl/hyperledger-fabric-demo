@@ -48,3 +48,4 @@ services:
       - ./organizations/ordererOrganizations/example.com/orderers/localhost.example.com/tls:/var/hyperledger/orderer/tls
     ports:
       - 7050:7050
+      - 7053:7053
